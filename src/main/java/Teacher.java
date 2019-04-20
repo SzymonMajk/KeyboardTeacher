@@ -8,25 +8,29 @@ import java.time.Instant;
 
 public class Teacher {
 
-    public void proceed(String lineFromFile) {
+    private String userAction(String lineFromFile) {
         BufferedReader userReader = new BufferedReader(new InputStreamReader(System.in));
-        Line parsed = new Line(lineFromFile);
-        String userInput;
+        String userOutput = "";
 
         try {
             System.out.println(lineFromFile);
-            userInput = userReader.readLine();
-
-            while (!parsed.compare(userInput)) {
-                String message = String.format("Znaleziono błąd w słowie %s, dokładniej w znaku %d",
-                        parsed.getFirstWrongWord(), parsed.getFirstErrorIndex());
-                System.out.println(message);
-
-                System.out.println(lineFromFile);
-                userInput = userReader.readLine();
-            }
+            userOutput = userReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        return userOutput;
+    }
+
+    private void proceed(String lineFromFile) {
+        Line parsed = new Line(lineFromFile);
+        String userInput = userAction(lineFromFile);
+
+        while (!parsed.compare(userInput)) {
+            String message = String.format("Znaleziono błąd w słowie %s, dokładnie w znaku %d",
+                    parsed.getFirstWrongWord(), parsed.getFirstErrorIndex());
+            System.out.println(message);
+            userInput = userAction(lineFromFile);
         }
     }
 

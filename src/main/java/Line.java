@@ -7,7 +7,7 @@ public class Line {
 
     private final String rawLine;
     private final List<String> words;
-    private Integer errorIndex;
+    private Integer errorIndex = -1;
 
     Line(String line) {
         rawLine = line;
@@ -27,21 +27,22 @@ public class Line {
      * @return whole word with first error occurrence.
      */
     public String getFirstWrongWord() {
-        int firstWrongWordIndex = 0;
+        if (errorIndex == -1) {
+            return "";
+        }
+
         int lettersSum = 0;
 
-        for (int i = 0; i < words.size(); ++i) {
-            int wordLength = words.get(i).length();
+        for (String word : words) {
 
-            if (wordLength + lettersSum > errorIndex) {
-                firstWrongWordIndex = i;
-                break;
+            if (word.length() + lettersSum > errorIndex) {
+                return word;
             } else {
-                lettersSum += wordLength;
+                lettersSum += word.length();
             }
         }
 
-        return words.get(firstWrongWordIndex);
+        return "";
     }
 
     /**
@@ -51,14 +52,7 @@ public class Line {
      * @return only information about complete characters compatibility.
      */
     public boolean compare(String userInput) {
-
-        int indexOfDifference = StringUtils.indexOfDifference(rawLine, userInput);
-
-        if (indexOfDifference == -1) {
-            return true;
-        } else {
-            this.errorIndex = indexOfDifference;
-            return false;
-        }
+        this.errorIndex =  StringUtils.indexOfDifference(rawLine, userInput);
+        return this.errorIndex == -1;
     }
 }
