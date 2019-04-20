@@ -27,8 +27,8 @@ public class Teacher {
         String userInput = userAction(lineFromFile);
 
         while (!parsed.compare(userInput)) {
-            String message = String.format("Znaleziono błąd w słowie %s, dokładnie w znaku %d",
-                    parsed.getFirstWrongWord(), parsed.getFirstErrorIndex());
+            String message = String.format("Znaleziono błąd w %d znaku, w słowie %s",
+                    parsed.getFirstErrorIndex(), parsed.getFirstWrongWord());
             System.out.println(message);
             userInput = userAction(lineFromFile);
         }
